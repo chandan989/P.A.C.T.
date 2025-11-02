@@ -18,6 +18,8 @@ import {
   ResponsiveContainer,
   Legend
 } from "recharts";
+import { motion } from "framer-motion"; // Import motion for animations
+import { FallingPattern } from "@/components/ui/falling-pattern";
 
 const Analytics = () => {
   const revenueData = [
@@ -54,182 +56,204 @@ const Analytics = () => {
 
   return (
     <AppLayout>
-      <div className="p-8">
-        {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-display font-bold mb-2 uppercase tracking-wide">Analytics & Insights</h1>
-            <p className="text-muted-foreground">Track performance and revenue metrics</p>
-          </div>
-          <div className="flex gap-3">
-            <Select defaultValue="30">
-              <SelectTrigger className="w-40">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="7">Last 7 days</SelectItem>
-                <SelectItem value="30">Last 30 days</SelectItem>
-                <SelectItem value="90">Last 90 days</SelectItem>
-                <SelectItem value="365">Last year</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button variant="outline">
-              <Download className="h-4 w-4 mr-2" />
-              Export Report
-            </Button>
-          </div>
-        </div>
+      <FallingPattern>
+        <div className="p-8 space-y-8 font-mono"> {/* Added font-mono and space-y-8 */}
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mb-8 flex items-center justify-between"
+          >
+            <div>
+              <h1 className="text-4xl font-display font-bold mb-2 uppercase tracking-wide">Analytics & Insights</h1>
+              <p className="text-muted-foreground">Track performance and revenue metrics</p>
+            </div>
+            <div className="flex gap-3">
+              <Select defaultValue="30">
+                <SelectTrigger className="w-40 rounded-none"> {/* Ensured rounded-none */}
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="7">Last 7 days</SelectItem>
+                  <SelectItem value="30">Last 30 days</SelectItem>
+                  <SelectItem value="90">Last 90 days</SelectItem>
+                  <SelectItem value="365">Last year</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button variant="outline" className="rounded-none"> {/* Ensured rounded-none */}
+                <Download className="h-4 w-4 mr-2" />
+                Export Report
+              </Button>
+            </div>
+          </motion.div>
 
-        {/* Key Metrics */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="border-border">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground uppercase">Total Revenue</CardTitle>
-              <DollarSign className="h-4 w-4 text-bitcoin" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-bitcoin">0.66 BTC</div>
-              <p className="text-xs text-muted-foreground mt-1">+24% from last month</p>
-            </CardContent>
-          </Card>
+          {/* Key Metrics */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.5 }}
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            <Card className="border-border rounded-none"> {/* Ensured rounded-none */}
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground uppercase">Total Revenue</CardTitle>
+                <DollarSign className="h-4 w-4 text-bitcoin" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-bitcoin">0.66 BTC</div>
+                <p className="text-xs text-muted-foreground mt-1">+24% from last month</p>
+              </CardContent>
+            </Card>
 
-          <Card className="border-border">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground uppercase">Documents Generated</CardTitle>
-              <FileText className="h-4 w-4 text-icp" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold">4,243</div>
-              <p className="text-xs text-muted-foreground mt-1">+18% from last month</p>
-            </CardContent>
-          </Card>
+            <Card className="border-border rounded-none"> {/* Ensured rounded-none */}
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground uppercase">Documents Generated</CardTitle>
+                <FileText className="h-4 w-4 text-icp" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">4,243</div>
+                <p className="text-xs text-muted-foreground mt-1">+18% from last month</p>
+              </CardContent>
+            </Card>
 
-          <Card className="border-border">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground uppercase">Template Downloads</CardTitle>
-              <TrendingUp className="h-4 w-4 text-story" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold">12,847</div>
-              <p className="text-xs text-muted-foreground mt-1">+31% from last month</p>
-            </CardContent>
-          </Card>
+            <Card className="border-border rounded-none"> {/* Ensured rounded-none */}
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground uppercase">Template Downloads</CardTitle>
+                <TrendingUp className="h-4 w-4 text-story" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">12,847</div>
+                <p className="text-xs text-muted-foreground mt-1">+31% from last month</p>
+              </CardContent>
+            </Card>
 
-          <Card className="border-border">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground uppercase">Average Rating</CardTitle>
-              <Star className="h-4 w-4 text-bitcoin" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold">4.8</div>
-              <p className="text-xs text-muted-foreground mt-1">From 247 reviews</p>
-            </CardContent>
-          </Card>
-        </div>
+            <Card className="border-border rounded-none"> {/* Ensured rounded-none */}
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground uppercase">Average Rating</CardTitle>
+                <Star className="h-4 w-4 text-bitcoin" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">4.8</div>
+                <p className="text-xs text-muted-foreground mt-1">From 247 reviews</p>
+              </CardContent>
+            </Card>
+          </motion.div>
 
-        {/* Charts Row 1 */}
-        <div className="grid lg:grid-cols-2 gap-6 mb-6">
-          <Card className="border-border">
-            <CardHeader>
-              <CardTitle className="uppercase tracking-wide">Revenue Over Time</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={revenueData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                  <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" />
-                  <YAxis stroke="hsl(var(--muted-foreground))" />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "hsl(var(--card))",
-                      border: "1px solid hsl(var(--border))",
-                      borderRadius: "8px",
-                    }}
-                  />
-                  <Line type="monotone" dataKey="revenue" stroke="hsl(var(--bitcoin-orange))" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
+          {/* Charts Row 1 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="grid lg:grid-cols-2 gap-6"
+          >
+            <Card className="border-border rounded-none"> {/* Ensured rounded-none */}
+              <CardHeader>
+                <CardTitle className="uppercase tracking-wide">Revenue Over Time</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={revenueData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                    <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" />
+                    <YAxis stroke="hsl(var(--muted-foreground))" />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "hsl(var(--card))",
+                        border: "1px solid hsl(var(--border))",
+                        borderRadius: "8px",
+                      }}
+                    />
+                    <Line type="monotone" dataKey="revenue" stroke="hsl(var(--bitcoin-orange))" strokeWidth={2} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
 
-          <Card className="border-border">
-            <CardHeader>
-              <CardTitle className="uppercase tracking-wide">Top Performing Templates</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={templatePerformance} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                  <XAxis type="number" stroke="hsl(var(--muted-foreground))" />
-                  <YAxis dataKey="name" type="category" stroke="hsl(var(--muted-foreground))" width={150} />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "hsl(var(--card))",
-                      border: "1px solid hsl(var(--border))",
-                      borderRadius: "8px",
-                    }}
-                  />
-                  <Bar dataKey="downloads" fill="hsl(var(--icp-blue))" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </div>
+            <Card className="border-border rounded-none"> {/* Ensured rounded-none */}
+              <CardHeader>
+                <CardTitle className="uppercase tracking-wide">Top Performing Templates</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={templatePerformance} layout="vertical">
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                    <XAxis type="number" stroke="hsl(var(--muted-foreground))" />
+                    <YAxis dataKey="name" type="category" stroke="hsl(var(--muted-foreground))" width={150} />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "hsl(var(--card))",
+                        border: "1px solid hsl(var(--border))",
+                        borderRadius: "8px",
+                      }}
+                    />
+                    <Bar dataKey="downloads" fill="#177BFE" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </motion.div>
 
-        {/* Charts Row 2 */}
-        <div className="grid lg:grid-cols-3 gap-6">
-          <Card className="border-border">
-            <CardHeader>
-              <CardTitle className="uppercase tracking-wide">Document Types Distribution</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={documentTypes}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={(entry) => `${entry.name}: ${entry.value}%`}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {documentTypes.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
+          {/* Charts Row 2 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="grid lg:grid-cols-3 gap-6"
+          >
+            <Card className="border-border rounded-none"> {/* Ensured rounded-none */}
+              <CardHeader>
+                <CardTitle className="uppercase tracking-wide">Document Types Distribution</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={documentTypes}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={(entry) => `${entry.name}: ${entry.value}%`}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {documentTypes.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
 
-          <Card className="border-border lg:col-span-2">
-            <CardHeader>
-              <CardTitle className="uppercase tracking-wide flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                Recent Activity
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentActivity.map((activity, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-3 border border-border rounded-lg">
-                    <div>
-                      <p className="font-medium text-sm">{activity.action}</p>
-                      <p className="text-xs text-muted-foreground">{activity.time}</p>
+            <Card className="border-border lg:col-span-2 rounded-none"> {/* Ensured rounded-none */}
+              <CardHeader>
+                <CardTitle className="uppercase tracking-wide flex items-center gap-2">
+                  <Users className="h-5 w-5" />
+                  Recent Activity
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {recentActivity.map((activity, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-3 border border-border rounded-none"> {/* Ensured rounded-none */}
+                      <div>
+                        <p className="font-medium text-sm">{activity.action}</p>
+                        <p className="text-xs text-muted-foreground">{activity.time}</p>
+                      </div>
+                      {activity.revenue > 0 && (
+                        <span className="text-sm font-bold text-bitcoin">+{activity.revenue} BTC</span>
+                      )}
                     </div>
-                    {activity.revenue > 0 && (
-                      <span className="text-sm font-bold text-bitcoin">+{activity.revenue} BTC</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
-      </div>
+      </FallingPattern>
     </AppLayout>
   );
 };

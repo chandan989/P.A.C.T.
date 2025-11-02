@@ -16,6 +16,7 @@ type FallingPatternProps = React.ComponentProps<'div'> & {
 	blurIntensity?: string;
 	/** Pattern density - affects spacing (default: 1) */
 	density?: number;
+	children?: React.ReactNode; // Add children prop
 };
 
 export function FallingPattern({
@@ -25,6 +26,7 @@ export function FallingPattern({
 	blurIntensity = '1em',
 	density = 1,
 	className,
+	children, // Destructure children
 }: FallingPatternProps) {
 	// Generate background image style with customizable color
 	const generateBackgroundImage = () => {
@@ -118,6 +120,7 @@ export function FallingPattern({
 		'300px 158px',
 		'300px 210px',
 		'300px 210px',
+		'300px 210px',
 	].join(', ');
 
 	const startPositions =
@@ -130,10 +133,10 @@ export function FallingPattern({
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				transition={{ duration: 0.2 }}
-				className="size-full"
+				className="absolute inset-0 size-full z-0" // Changed to absolute and z-0
 			>
 				<motion.div
-					className="relative size-full z-0"
+					className="relative size-full" // Removed z-0 here
 					style={{
 						backgroundColor,
 						backgroundImage: generateBackgroundImage(),
@@ -164,6 +167,9 @@ export function FallingPattern({
 					backgroundSize: `${8 * density}px ${8 * density}px`,
 				}}
 			/>
+			<div className="relative z-10"> {/* Wrapper for children with higher z-index */}
+				{children}
+			</div>
 		</div>
 	);
 }

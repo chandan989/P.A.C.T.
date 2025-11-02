@@ -12,10 +12,14 @@ import {
   DollarSign,
   Settings,
   HelpCircle,
-  Bitcoin
+  Bitcoin,
+  ChevronLeft,
+  ChevronRight,
+  Power
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import * as React from "react";
+import { useState } from "react";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
@@ -34,15 +38,29 @@ const navigation = [
 
 export const AppSidebar = () => {
   const location = useLocation();
+  const [isCollapsed, setIsCollapsed] = useState(true); // Default to collapsed
 
   return (
-    <aside className="w-64 border-r border-border bg-card flex-shrink-0">
-      <div className="flex flex-col h-full">
+    <aside
+      className={cn(
+        "flex-shrink-0 transition-all duration-300 ease-in-out",
+        isCollapsed ? "w-20" : "w-64"
+      )}
+    >
+      <div className="flex flex-col h-full relative">
+        {/* Collapse/Expand Button */}
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="absolute -right-3 top-6 z-10 p-1 rounded-md bg-background text-foreground"
+        >
+          {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+        </button>
+
         {/* Logo */}
-        <div className="p-6 border-b border-border">
-          <Link to="/dashboard" className="flex items-center gap-2">
+        <div className={cn("py-5", isCollapsed ? "px-2" : "px-6")}>
+          <Link to="/dashboard" className="flex items-center gap-2 justify-center">
             <img src={"logo.svg"} className="h-8 w-auto"/>
-            <span className="text-2xl font-display font-bold uppercase tracking-wider">P.A.C.T.</span>
+            {!isCollapsed && <span className="text-2xl font-display font-bold uppercase tracking-wider">P.A.C.T.</span>}
           </Link>
         </div>
 
@@ -55,30 +73,45 @@ export const AppSidebar = () => {
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                  "flex items-center gap-2 rounded-md text-sm font-medium transition-colors",
+                  isCollapsed ? "justify-center px-2 py-2.5" : "px-4 py-2.5",
                   isActive
                     ? "bg-bitcoin text-white"
-                    : "text-foreground hover:bg-muted"
+                    : "text-foreground hover:bg-muted-foreground/10"
                 )}
               >
                 <item.icon className="h-5 w-5" />
-                {item.name}
+                {!isCollapsed && item.name}
               </Link>
             );
           })}
         </nav>
 
         {/* User Info */}
-        <div className="p-4 border-t border-border">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-bitcoin/10 flex items-center justify-center font-bold text-bitcoin">
-              U
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">John Doe</p>
-              <p className="text-xs text-muted-foreground truncate">john@example.com</p>
-            </div>
-          </div>
+        <div className={cn("py-4", isCollapsed ? "px-2" : "px-4")}>
+          {/*<div className={cn("flex items-center gap-3", isCollapsed && "justify-center")}>*/}
+          {/*  <div className="w-10 h-10 rounded-md bg-bitcoin/10 flex items-center justify-center font-bold text-bitcoin">*/}
+          {/*    U*/}
+          {/*  </div>*/}
+          {/*  {!isCollapsed && (*/}
+          {/*    <div className="flex-1 min-w-0">*/}
+          {/*      <p className="text-sm font-medium truncate">John Doe</p>*/}
+          {/*      <p className="text-xs text-muted-foreground truncate">john@example.com</p>*/}
+          {/*    </div>*/}
+          {/*  )}*/}
+          {/*</div>*/}
+          {/* Power Off Button */}
+          <Link
+            to="/"
+            className={cn(
+              "mt-4 flex items-center gap-2 rounded-md text-sm font-medium transition-colors",
+              isCollapsed ? "justify-center px-2 py-2.5" : "px-4 py-2.5",
+              "text-foreground hover:bg-muted-foreground/10"
+            )}
+          >
+            <Power className="h-5 w-5" />
+            {!isCollapsed && "Power Off"}
+          </Link>
         </div>
       </div>
     </aside>
