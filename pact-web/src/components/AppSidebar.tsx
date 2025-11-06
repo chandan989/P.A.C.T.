@@ -15,7 +15,8 @@ import {
   Bitcoin,
   ChevronLeft,
   ChevronRight,
-  Power
+  Power,
+  FileSignature
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import * as React from "react";
@@ -31,6 +32,7 @@ const navigation = [
   { name: "Evidence Vault", href: "/evidence", icon: Shield },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
   { name: "Compliance Center", href: "/compliance", icon: Scale },
+  { name: "Smart Contracts", href: "/smart-contracts", icon: FileSignature },
   { name: "Transactions", href: "/transactions", icon: DollarSign },
   { name: "Settings", href: "/settings", icon: Settings },
   { name: "Help", href: "/help", icon: HelpCircle },

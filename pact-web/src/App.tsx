@@ -14,6 +14,7 @@ import Evidence from "./pages/Evidence";
 import Analytics from "./pages/Analytics";
 import Compliance from "./pages/Compliance";
 import Transactions from "./pages/Transactions";
+import SmartContracts from "./pages/SmartContracts";
 import Settings from "./pages/Settings";
 import Help from "./pages/Help";
 import NotFound from "./pages/NotFound";
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/compliance" element={<Compliance />} />
           <Route path="/transactions" element={<Transactions />} />
+          <Route path="/smart-contracts" element={<SmartContracts />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/help" element={<Help />} />
           <Route path="*" element={<NotFound />} />

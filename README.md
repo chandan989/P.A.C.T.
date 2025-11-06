@@ -292,21 +292,30 @@ dfx --version  # 0.15.0+
 python --version  # 3.9+
 ```
 
-### 🔥 **One-Command Installation**
+### 🔥 **Quick Start**
 
 ```bash
-# Clone the revolution
+# Clone the repository
 git clone https://github.com/yourusername/pact.git
 cd pact
 
-# Install everything
-npm run setup:all
+# Install frontend dependencies
+cd pact-web
+npm install
 
-# Launch P.A.C.T.
-npm run dev:all
+# Start local ICP network (in separate terminal)
+dfx start --background
+
+# Deploy canisters locally
+dfx deploy
+
+# Start frontend
+npm run dev
 ```
 
-**That's it!** 🎉 Visit `http://localhost:3000` and start generating legal documents.
+**That's it!** 🎉 Visit `http://localhost:5173` and start using P.A.C.T.
+
+**Note:** Canisters are already deployed on ICP mainnet. See [Deployment](#-deploy-to-icp-mainnet) section for details.
 
 ---
 
@@ -314,39 +323,36 @@ npm run dev:all
 
 ```
 pact/
-├── 🎨 frontend/              # React + TypeScript
-│   ├── components/           # Reusable UI components
-│   ├── features/             
-│   │   ├── document-gen/     # AI document generator
-│   │   ├── ip-licensing/     # Story Protocol integration
-│   │   ├── evidence-vault/   # Constellation evidence manager
-│   │   └── bitcoin-wallet/   # BTC payment integration
-│   └── hooks/                # Custom React hooks
+├── 🎨 pact-web/              # React + TypeScript Frontend
+│   ├── src/
+│   │   ├── components/       # Reusable UI components
+│   │   ├── pages/            # Page components
+│   │   │   ├── Evidence.tsx  # Evidence Management Portal
+│   │   │   ├── SmartContracts.tsx  # Smart Contract Automation
+│   │   │   ├── Compliance.tsx  # Compliance Dashboard
+│   │   │   └── ...
+│   │   ├── lib/              # Integration libraries
+│   │   │   ├── icp.ts        # ICP canister client
+│   │   │   ├── constellation.ts  # Constellation DAG client
+│   │   │   ├── smart-contracts.ts  # Smart contract logic
+│   │   │   └── compliance.ts  # Compliance manager
+│   │   └── hooks/            # React hooks
+│   │       └── use-evidence.ts  # Evidence management hook
+│   └── package.json
 │
-├── 🧠 backend/               # FastAPI + Python
-│   ├── ai/                   # GPT-4 integration
-│   ├── blockchain/
-│   │   ├── icp_client.py     # ICP canister interface
-│   │   ├── story_client.py   # Story Protocol SDK
-│   │   └── dag_client.py     # Constellation API
-│   └── services/             # Business logic
+├── ⚙️ src/                   # ICP Motoko Canisters
+│   ├── evidence_canister/    # Evidence storage & access control
+│   │   └── main.mo
+│   ├── smart_contracts_canister/  # Smart legal contracts
+│   │   └── main.mo
+│   ├── compliance_canister/  # Compliance document management
+│   │   └── main.mo
+│   └── biometric_canister/   # Biometric signature storage
+│       └── main.mo
 │
-├── ⚙️ canisters/             # ICP Smart Contracts
-│   ├── document_factory/     # Rust: AI generation
-│   ├── firm_manager/         # Rust: B2B dashboard
-│   ├── bitcoin_integration/  # Motoko: BTC payments
-│   └── ip_registry/          # Motoko: Story bridge
-│
-├── 🔗 contracts/             # Story Protocol
-│   └── IPLicensing.sol       # PIL smart contracts
-│
-├── 🕸️ constellation/         # DAG Metagraph
-│   └── evidence_validator/   # Scala: Validation logic
-│
-└── 📚 docs/                  # Full documentation
-    ├── ARCHITECTURE.md
-    ├── API_REFERENCE.md
-    └── DEPLOYMENT.md
+├── 📄 dfx.json               # ICP canister configuration
+├── 📄 README.md              # This file
+└── 📄 LICENSE
 ```
 
 ---
@@ -453,16 +459,58 @@ npm run test:load
 
 ### 🌐 **Deploy to ICP Mainnet**
 
+#### ✅ **Current Deployment Status**
+
+**Mainnet Canisters:**
+- ✅ `biometric_canister`: `y54rf-gqaaa-aaaan-qz77a-cai` (Deployed)
+
+**Local Canisters (All 4 deployed and working):**
+- ✅ `evidence_canister`: Evidence storage and access control
+- ✅ `smart_contracts_canister`: Smart legal contract automation
+- ✅ `compliance_canister`: Compliance document management  
+- ✅ `biometric_canister`: Biometric signature storage
+
+#### 🚀 **Deploy Remaining Canisters to Mainnet**
+
+**Prerequisites:**
+- DFX SDK installed
+- ICP wallet with cycles (need ~2-3 TC per canister)
+- Identity configured: `dfx identity use default`
+
+**Deploy Steps:**
+
 ```bash
-# Build canisters
-dfx build --network ic
+# 1. Ensure you're in project root
+cd /path/to/Pact
 
-# Deploy to mainnet
-dfx deploy --network ic --with-cycles 10000000000000
+# 2. Link wallet to mainnet (if not already done)
+dfx identity set-wallet --network ic <YOUR_WALLET_CANISTER_ID>
 
-# Get canister URLs
-dfx canister --network ic info document_factory
+# 3. Check cycles balance
+dfx wallet --network ic balance
+
+# 4. Deploy canisters one by one (or all at once if you have enough cycles)
+dfx deploy --network ic evidence_canister
+dfx deploy --network ic smart_contracts_canister
+dfx deploy --network ic compliance_canister
+
+# OR deploy all remaining canisters:
+dfx deploy --network ic
+
+# 5. Get canister IDs after deployment
+dfx canister --network ic id evidence_canister
+dfx canister --network ic id smart_contracts_canister
+dfx canister --network ic id compliance_canister
+
+# 6. Update frontend .env.local with canister IDs
+# VITE_ICP_HOST=https://ic0.app
+# VITE_ICP_EVIDENCE_CANISTER_ID=<id_from_step_5>
+# VITE_ICP_SMART_CONTRACTS_CANISTER_ID=<id_from_step_5>
+# VITE_ICP_COMPLIANCE_CANISTER_ID=<id_from_step_5>
+# VITE_ICP_BIOMETRIC_CANISTER_ID=y54rf-gqaaa-aaaan-qz77a-cai
 ```
+
+**Note:** Each canister requires approximately **2-3 TC** (trillion cycles) to deploy. Ensure your wallet has sufficient cycles before deploying.
 
 ### 📜 **Deploy Story Protocol Contracts**
 
